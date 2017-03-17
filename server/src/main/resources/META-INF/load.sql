@@ -1,0 +1,1 @@
+INSERT INTO PRODUCTS("ID", "NAME", "DESCRIPTION", "PRICE", "CATEGORY") VALUES (1, 'Xbox ONE', 'Xbox ONE - Microsoft', 1.700, 'console')

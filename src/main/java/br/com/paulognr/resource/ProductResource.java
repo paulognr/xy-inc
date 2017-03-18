@@ -3,8 +3,10 @@ package br.com.paulognr.resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -12,6 +14,8 @@ import br.com.paulognr.business.ProductBO;
 import br.com.paulognr.entity.ProductEntity;
 import br.com.paulognr.utils.ConverterUtils;
 
+@ApplicationScoped
+@Path("products")
 public class ProductResource extends BaseRestResource{
 
 	@Inject

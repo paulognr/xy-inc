@@ -1,5 +1,6 @@
 package br.com.paulognr.resource;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,7 @@ import br.com.paulognr.utils.ConverterUtils;
 @Path("/products")
 public class ProductResource extends BaseRestResource{
 	
-	private static final Logger LOG = Logger.getLogger(ProductResource.class.getName());
+	private static final Logger LOG = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Inject
 	private ProductBO bo;

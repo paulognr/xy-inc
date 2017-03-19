@@ -1,5 +1,6 @@
 package br.com.paulognr.dao.impl;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ import br.com.paulognr.entity.ProductEntity;
 @RequestScoped
 public class ProductDAOImpl implements ProductDAO {
 
-	private static final Logger LOG = Logger.getLogger(ProductDAOImpl.class.getName());
+	private static final Logger LOG = Logger.getLogger(MethodHandles.lookup().lookupClass());
 
 	@PersistenceContext
 	private EntityManager em;

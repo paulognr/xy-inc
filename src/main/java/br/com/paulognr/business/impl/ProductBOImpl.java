@@ -11,7 +11,7 @@ import br.com.paulognr.dao.ProductDAO;
 import br.com.paulognr.entity.ProductEntity;
 
 @RequestScoped
-public class ProdutcBOImpl implements ProductBO {
+public class ProductBOImpl implements ProductBO {
 
 	@Inject
 	private ProductDAO dao;

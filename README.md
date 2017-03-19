@@ -1,11 +1,11 @@
-= XY-INC Backend App
+# XY-INC Backend App
 
-== Requirements
+## Requirements
 
 - Java 8
 - Maven 3.3.9
 
-== Running
+## Running
 
 To compile and run unit tests.
 

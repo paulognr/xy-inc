@@ -3,15 +3,19 @@ package br.com.paulognr.dao.impl;
 import java.util.List;
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
+import org.jboss.logging.Logger;
 
 import br.com.paulognr.dao.ProductDAO;
 import br.com.paulognr.entity.ProductEntity;
 
-@ApplicationScoped
-public class ProductDAOImpl implements ProductDAO{
+@RequestScoped
+public class ProductDAOImpl implements ProductDAO {
+
+	private static final Logger LOG = Logger.getLogger(ProductDAOImpl.class.getName());
 
 	@PersistenceContext
 	private EntityManager em;
@@ -25,7 +29,7 @@ public class ProductDAOImpl implements ProductDAO{
 	}
 
 	public void remove(ProductEntity entity) {
-		
+
 	}
 
 	public Optional<ProductEntity> findById(int id) {
@@ -33,7 +37,15 @@ public class ProductDAOImpl implements ProductDAO{
 	}
 
 	public List<ProductEntity> findAll() {
-		return null;
+		LOG.debug("findAll");
+
+		List<ProductEntity> result = em.createNamedQuery("ProductEntity.findAll", ProductEntity.class)
+				.getResultList();
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("findAll - result: " + result);
+		}
+
+		return result;
 	}
-	
 }

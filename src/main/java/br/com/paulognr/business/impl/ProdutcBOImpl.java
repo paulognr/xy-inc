@@ -3,14 +3,14 @@ package br.com.paulognr.business.impl;
 import java.util.List;
 import java.util.Optional;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 import br.com.paulognr.business.ProductBO;
 import br.com.paulognr.dao.ProductDAO;
 import br.com.paulognr.entity.ProductEntity;
 
-@ApplicationScoped
+@RequestScoped
 public class ProdutcBOImpl implements ProductBO {
 
 	@Inject
@@ -33,7 +33,7 @@ public class ProdutcBOImpl implements ProductBO {
 	}
 
 	public List<ProductEntity> findAll() {
-		return null;
+		return dao.findAll();
 	}
 	
 }

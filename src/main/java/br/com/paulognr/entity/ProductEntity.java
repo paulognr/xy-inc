@@ -7,10 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "products")
+@Entity()
+@Table(name = "PRODUCTS")
+@NamedQueries({
+	@NamedQuery(name="ProductEntity.findAll", query="SELECT p FROM ProductEntity p")
+})
 public class ProductEntity implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -91,6 +96,12 @@ public class ProductEntity implements Serializable{
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductEntity [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
+				+ ", category=" + category + "]";
 	}
 
 }

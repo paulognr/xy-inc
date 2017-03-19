@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,5 +59,28 @@ public class ProductBOTest {
 		assertThat(result.get(0), equalTo(entity1));
 		assertThat(result.get(1), equalTo(entity2));
 		verify(dao, times(1)).findAll();
+	}
+	
+	@Test
+	public void findByIdNotFound(){
+		when(dao.findById(99)).thenReturn(Optional.empty());
+		
+		Optional<ProductEntity> result = bo.findById(99);
+		
+		assertThat(result.isPresent(), equalTo(false));
+		verify(dao, times(1)).findById(99);
+	}
+	
+	@Test
+	public void findById(){
+		ProductEntity mockResult = new ProductEntity();
+		mockResult.setId(1);
+		when(dao.findById(1)).thenReturn(Optional.of(mockResult));
+		
+		Optional<ProductEntity> result = bo.findById(1);
+		
+		assertThat(result.isPresent(), equalTo(true));
+		assertThat(result.get(), equalTo(mockResult));
+		verify(dao, times(1)).findById(1);
 	}
 }

@@ -34,14 +34,23 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 	public Optional<ProductEntity> findById(int id) {
-		return Optional.empty();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("findById - id:" + id);
+		}
+
+		ProductEntity entity = em.find(ProductEntity.class, id);
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("findById - result: " + entity);
+		}
+		
+		return Optional.ofNullable(entity);
 	}
 
 	public List<ProductEntity> findAll() {
 		LOG.debug("findAll");
 
-		List<ProductEntity> result = em.createNamedQuery("ProductEntity.findAll", ProductEntity.class)
-				.getResultList();
+		List<ProductEntity> result = em.createNamedQuery("ProductEntity.findAll", ProductEntity.class).getResultList();
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("findAll - result: " + result);

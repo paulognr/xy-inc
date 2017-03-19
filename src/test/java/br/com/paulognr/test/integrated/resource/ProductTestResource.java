@@ -6,11 +6,16 @@ import io.restassured.response.Response;
 
 public final class ProductTestResource {
 	
-	private static final String FIND_ALL = "/api/v1/products";
+	private static final String ROOT_PATH = "/api/v1/products";
+	private static final String FIND_BY_ID = ROOT_PATH + "/{id}";
 
 	private ProductTestResource() {}
 	
 	public static Response findAll(){
-		return given().get(FIND_ALL).andReturn();
+		return given().get(ROOT_PATH).andReturn();
+	}
+	
+	public static Response findById(int id){
+		return given().pathParam("id", id).get(FIND_BY_ID).andReturn();
 	}
 }

@@ -1,4 +1,4 @@
-package br.com.paulognr.resource;
+package br.com.paulognr.application;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

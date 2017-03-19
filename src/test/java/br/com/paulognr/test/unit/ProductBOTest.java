@@ -3,6 +3,7 @@ package br.com.paulognr.test.unit;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -19,10 +20,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import br.com.paulognr.api.entity.ProductEntity;
+import br.com.paulognr.api.exception.ProductException;
 import br.com.paulognr.business.ProductBO;
 import br.com.paulognr.business.impl.ProductBOImpl;
 import br.com.paulognr.dao.ProductDAO;
-import br.com.paulognr.entity.ProductEntity;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductBOTest {
@@ -82,5 +84,17 @@ public class ProductBOTest {
 		assertThat(result.isPresent(), equalTo(true));
 		assertThat(result.get(), equalTo(mockResult));
 		verify(dao, times(1)).findById(1);
+	}
+	
+	@Test
+	public void insertIdMustBeNull(){
+		ProductEntity entity = new ProductEntity();
+		entity.setId(1);
+		try {
+			bo.insert(entity);
+			fail();
+		} catch (ProductException e) {
+			assertThat(e.getCode(), equalTo(ProductException.ID_MUST_BE_NULL.getCode()));
+		}
 	}
 }

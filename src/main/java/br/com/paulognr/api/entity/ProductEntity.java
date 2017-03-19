@@ -1,4 +1,4 @@
-package br.com.paulognr.entity;
+package br.com.paulognr.api.entity;
 
 import java.io.Serializable;
 
@@ -22,7 +22,7 @@ public class ProductEntity implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
 	@Column
 	private String name;
@@ -36,11 +36,11 @@ public class ProductEntity implements Serializable{
 	@Column
 	private String category;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

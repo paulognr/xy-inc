@@ -10,8 +10,8 @@ import javax.persistence.PersistenceContext;
 
 import org.jboss.logging.Logger;
 
+import br.com.paulognr.api.entity.ProductEntity;
 import br.com.paulognr.dao.ProductDAO;
-import br.com.paulognr.entity.ProductEntity;
 
 @RequestScoped
 public class ProductDAOImpl implements ProductDAO {
@@ -22,7 +22,7 @@ public class ProductDAOImpl implements ProductDAO {
 	private EntityManager em;
 
 	public ProductEntity insert(ProductEntity entity) {
-		return null;
+		return entity;
 	}
 
 	public ProductEntity update(ProductEntity entity) {

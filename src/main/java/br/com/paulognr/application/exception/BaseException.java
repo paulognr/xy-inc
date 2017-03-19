@@ -47,6 +47,10 @@ public class BaseException extends Exception {
         this(error.getCode(), error.getDescription(), null, null);
     }
     
+    public String getCode() {
+    	return code;
+    }
+    
     public JsonObject toJson() {
         JsonObject jObject = new JsonObject();
         jObject.addProperty("code", code);
@@ -59,5 +63,6 @@ public class BaseException extends Exception {
         }
         return jObject;
     }
+
 	
 }

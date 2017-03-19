@@ -3,7 +3,7 @@ package br.com.paulognr.dao;
 import java.util.List;
 import java.util.Optional;
 
-import br.com.paulognr.entity.ProductEntity;
+import br.com.paulognr.api.entity.ProductEntity;
 
 public interface ProductDAO {
 

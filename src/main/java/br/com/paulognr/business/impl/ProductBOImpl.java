@@ -6,9 +6,10 @@ import java.util.Optional;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
+import br.com.paulognr.api.entity.ProductEntity;
+import br.com.paulognr.api.exception.ProductException;
 import br.com.paulognr.business.ProductBO;
 import br.com.paulognr.dao.ProductDAO;
-import br.com.paulognr.entity.ProductEntity;
 
 @RequestScoped
 public class ProductBOImpl implements ProductBO {
@@ -16,8 +17,12 @@ public class ProductBOImpl implements ProductBO {
 	@Inject
 	private ProductDAO dao;
 
-	public ProductEntity insert(ProductEntity entity) {
-		return null;
+	public ProductEntity insert(ProductEntity entity) throws ProductException {
+		if(entity.getId() != null){
+			throw new ProductException(ProductException.ID_MUST_BE_NULL); 
+		}
+		
+		return dao.insert(entity);
 	}
 
 	public ProductEntity update(ProductEntity entity) {

@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import org.jboss.logging.Logger;
 
 import br.com.paulognr.api.entity.ProductEntity;
+import br.com.paulognr.application.exception.BaseDaoException;
 import br.com.paulognr.dao.ProductDAO;
 
 @RequestScoped
@@ -21,8 +22,15 @@ public class ProductDAOImpl implements ProductDAO {
 	@PersistenceContext
 	private EntityManager em;
 
-	public ProductEntity insert(ProductEntity entity) {
-		return entity;
+	public ProductEntity insert(ProductEntity entity) throws BaseDaoException {
+		
+		try {
+			em.persist(entity);
+		} catch (Exception e) {
+			LOG.error("Error to persiste object", e);
+			throw new BaseDaoException(BaseDaoException.PERSISTENCE_ERROR, e);
+		}
+		return entity; 
 	}
 
 	public ProductEntity update(ProductEntity entity) {

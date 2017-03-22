@@ -2,6 +2,7 @@ package br.com.paulognr.test.unit;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.spy;
@@ -14,17 +15,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import br.com.paulognr.api.entity.ProductEntity;
 import br.com.paulognr.api.exception.ProductException;
+import br.com.paulognr.application.exception.BaseDaoException;
+import br.com.paulognr.application.exception.BaseException;
 import br.com.paulognr.business.ProductBO;
 import br.com.paulognr.business.impl.ProductBOImpl;
 import br.com.paulognr.dao.ProductDAO;
+import br.com.paulognr.dto.ProductDTO;
+import br.com.paulognr.test.integrated.resource.ProductTestResource;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductBOTest {
@@ -34,7 +41,7 @@ public class ProductBOTest {
 	
 	@Mock
 	private ProductDAO dao;
-
+	
 	@Test
 	public void findAllEmpty(){
 		when(dao.findAll()).thenReturn(Collections.emptyList());
@@ -93,8 +100,38 @@ public class ProductBOTest {
 		try {
 			bo.insert(entity);
 			fail();
-		} catch (ProductException e) {
+		} catch (BaseException e) {
 			assertThat(e.getCode(), equalTo(ProductException.ID_MUST_BE_NULL.getCode()));
 		}
+	}
+	
+	@Test
+	public void insertGenericError() throws BaseDaoException{
+		when(dao.insert(Mockito.any(ProductEntity.class))).thenThrow(new BaseDaoException(BaseDaoException.PERSISTENCE_ERROR));
+
+		ProductEntity entity = new ProductEntity();
+		entity.setName("name");
+		entity.setDescription("description");
+		entity.setPrice(1.0);
+		entity.setCategory("category");
+
+		try {
+			bo.insert(entity);
+			fail();
+		} catch (BaseException e) {
+			assertThat(e.getCode(), equalTo(BaseException.GENERIC_ERROR.getCode()));
+		}
+	}
+	
+	@Test
+	public void insert() throws BaseException{
+		ProductEntity entity = new ProductEntity();
+		entity.setName("name");
+		entity.setDescription("description");
+		entity.setPrice(1.0);
+		entity.setCategory("category");
+		bo.insert(entity);
+		
+		verify(bo, times(1)).insert(entity);
 	}
 }

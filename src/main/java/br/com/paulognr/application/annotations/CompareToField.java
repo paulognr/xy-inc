@@ -29,7 +29,7 @@ import br.com.paulognr.application.enums.ComparisonOperator;
 @ReportAsSingleViolation
 public @interface CompareToField {
 
-	String MESSAGE_ID = "{br.com.paulognr.application.validation.FieldComparation}";
+	String MESSAGE_ID = "{br.com.paulognr.application.annotations.CompareToField}";
 
 	String message() default MESSAGE_ID;
 

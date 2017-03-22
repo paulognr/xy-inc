@@ -46,7 +46,7 @@ public class ProductResource extends BaseRestResource{
 	}
 	
 	@POST
-	public Response insert(@NotNull ProductDTO dto) throws ProductException{
+	public Response insert(@NotNull ProductDTO dto) throws BaseException{
 		ProductEntity result = bo.insert(ConverterUtils.toEntity(dto));
 		return buildResponse(Status.CREATED, result);
 	}

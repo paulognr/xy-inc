@@ -30,15 +30,30 @@ public class ProductDAOImpl implements ProductDAO {
 			LOG.error("Error to persiste object", e);
 			throw new BaseDaoException(BaseDaoException.PERSISTENCE_ERROR, e);
 		}
+		
 		return entity; 
 	}
 
-	public ProductEntity update(ProductEntity entity) {
-		return null;
+	public ProductEntity update(ProductEntity entity) throws BaseDaoException {
+		
+		try {
+			em.merge(entity);
+		} catch (Exception e) {
+			LOG.error("Error to persiste object", e);
+			throw new BaseDaoException(BaseDaoException.PERSISTENCE_ERROR, e);
+		}
+		
+		return entity; 
 	}
 
-	public void remove(ProductEntity entity) {
-
+	public void remove(int id) throws BaseDaoException {
+		try {
+			ProductEntity entity = em.find(ProductEntity.class, id);
+			em.remove(entity);
+		} catch (Exception e) {
+			LOG.error("Error to remove object", e);
+			throw new BaseDaoException(BaseDaoException.PERSISTENCE_ERROR, e);
+		}
 	}
 
 	public Optional<ProductEntity> findById(int id) {

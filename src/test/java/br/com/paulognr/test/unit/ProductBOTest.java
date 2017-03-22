@@ -2,9 +2,9 @@ package br.com.paulognr.test.unit;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -30,8 +29,6 @@ import br.com.paulognr.application.exception.BaseException;
 import br.com.paulognr.business.ProductBO;
 import br.com.paulognr.business.impl.ProductBOImpl;
 import br.com.paulognr.dao.ProductDAO;
-import br.com.paulognr.dto.ProductDTO;
-import br.com.paulognr.test.integrated.resource.ProductTestResource;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductBOTest {
@@ -134,4 +131,120 @@ public class ProductBOTest {
 		
 		verify(bo, times(1)).insert(entity);
 	}
+	
+	@Test
+	public void updateIdMustNotBeNull(){
+		ProductEntity entity = new ProductEntity();
+		try {
+			bo.update(entity);
+			fail();
+		} catch (BaseException e) {
+			assertThat(e.getCode(), equalTo(ProductException.ID_MUST_NOT_BE_NULL.getCode()));
+		}
+	}
+	
+	@Test
+	public void updateNotFound(){
+		ProductEntity entity = new ProductEntity();
+		entity.setId(99);
+		
+		when(dao.findById(entity.getId())).thenReturn(Optional.empty());
+		
+		try {
+			bo.update(entity);
+			fail();
+		} catch (BaseException e) {
+			assertThat(e.getCode(), equalTo(ProductException.NOT_FOUND.getCode()));
+		}
+	}
+	
+	@Test
+	public void updateGenericError() throws BaseDaoException{
+		ProductEntity entity = new ProductEntity();
+		entity.setId(1);
+		entity.setName("name");
+		entity.setDescription("description");
+		entity.setPrice(1.0);
+		entity.setCategory("category");
+		
+		when(dao.findById(entity.getId())).thenReturn(Optional.of(entity));
+		when(dao.update(Mockito.any(ProductEntity.class))).thenThrow(new BaseDaoException(BaseDaoException.PERSISTENCE_ERROR));
+
+		try {
+			bo.update(entity);
+			fail();
+		} catch (BaseException e) {
+			assertThat(e.getCode(), equalTo(BaseException.GENERIC_ERROR.getCode()));
+		}
+	}
+	
+	@Test
+	public void update() throws BaseException{
+		ProductEntity entity = new ProductEntity();
+		entity.setId(1);
+		entity.setName("name");
+		entity.setDescription("description");
+		entity.setPrice(1.0);
+		entity.setCategory("category");
+		
+		when(dao.findById(entity.getId())).thenReturn(Optional.of(entity));
+		
+		bo.update(entity);
+		
+		verify(bo, times(1)).update(entity);
+	}
+	
+	@Test
+	public void removeNotFound(){
+		int id = 99;
+		when(dao.findById(id)).thenReturn(Optional.empty());
+		
+		try {
+			bo.remove(id);
+			fail();
+		} catch (BaseException e) {
+			assertThat(e.getCode(), equalTo(ProductException.NOT_FOUND.getCode()));
+		}
+	}
+	
+	@Test
+	public void removeGenericError() throws BaseDaoException{
+		int id = 1;
+
+		ProductEntity entity = new ProductEntity();
+		entity.setId(id);
+		entity.setName("name");
+		entity.setDescription("description");
+		entity.setPrice(1.0);
+		entity.setCategory("category");
+		
+		when(dao.findById(1)).thenReturn(Optional.of(entity));
+		doThrow(new BaseDaoException(BaseDaoException.PERSISTENCE_ERROR)).when(dao).remove(id);
+
+		try {
+			bo.remove(id);
+			fail();
+		} catch (BaseException e) {
+			assertThat(e.getCode(), equalTo(BaseException.GENERIC_ERROR.getCode()));
+		}
+	}
+	
+	@Test
+	public void remove() throws BaseException{
+		int id = 1;
+		ProductEntity entity = new ProductEntity();
+		entity.setId(id);
+		entity.setName("name");
+		entity.setDescription("description");
+		entity.setPrice(1.0);
+		entity.setCategory("category");
+		
+		when(dao.findById(entity.getId())).thenReturn(Optional.of(entity));
+		
+		bo.remove(id);
+		
+		verify(bo, times(1)).remove(id);
+	}
+
+	
 }

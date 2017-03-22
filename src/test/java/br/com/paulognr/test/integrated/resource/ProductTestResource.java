@@ -11,7 +11,7 @@ import io.restassured.specification.RequestSpecification;
 public final class ProductTestResource {
 	
 	private static final String ROOT_PATH = "/api/v1/products";
-	private static final String FIND_BY_ID = ROOT_PATH + "/{id}";
+	private static final String BY_ID = ROOT_PATH + "/{id}";
 
 	private ProductTestResource() {}
 	
@@ -20,7 +20,7 @@ public final class ProductTestResource {
 	}
 	
 	public static Response findById(int id){
-		return given().pathParam("id", id).get(FIND_BY_ID).andReturn();
+		return given().pathParam("id", id).get(BY_ID).andReturn();
 	}
 	
 	public static Response insert(){
@@ -35,5 +35,33 @@ public final class ProductTestResource {
 		}
 		
 		return spec.post(ROOT_PATH).andReturn();
+	}
+	
+	public static Response update(){
+		return update(null);
+	}
+	
+	public static Response update(ProductDTO dto){
+		RequestSpecification spec = given();
+		
+		if(dto != null){
+			spec.pathParam("id", dto.getId()).body(new Gson().toJson(dto).toString());
+		}
+		
+		return spec.put(BY_ID).andReturn();
+	}
+	
+	public static Response remove(){
+		return remove(null);
+	}
+	
+	public static Response remove(Integer id){
+		RequestSpecification spec = given();
+		
+		if(id != null){
+			spec.pathParam("id", id);
+		}
+		
+		return spec.delete(BY_ID).andReturn();
 	}
 }

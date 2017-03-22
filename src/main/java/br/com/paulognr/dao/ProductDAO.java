@@ -9,8 +9,8 @@ import br.com.paulognr.application.exception.BaseDaoException;
 public interface ProductDAO {
 
 	ProductEntity insert(ProductEntity entity) throws BaseDaoException;
-	ProductEntity update(ProductEntity entity);
-	void remove(ProductEntity entity);
+	ProductEntity update(ProductEntity entity) throws BaseDaoException;
+	void remove(int id) throws BaseDaoException;
 	Optional<ProductEntity> findById(int id);
 	List<ProductEntity> findAll();
 	

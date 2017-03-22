@@ -74,4 +74,58 @@ public class ProductResourceIT extends BaseIntegratedTest {
 				.body("description", equalTo(dto.getDescription())).and().body("category", equalTo(dto.getCategory()));
 	}
 
+	@Test
+	public void updateNotFound() {
+		ProductDTO dto = new ProductDTO();
+		dto.setId(99);
+
+		ProductTestResource.update(dto).then().assertThat().statusCode(Status.BAD_REQUEST.getStatusCode()).and()
+				.body("code", equalTo(ProductException.NOT_FOUND.getCode()));
+	}
+
+	@Test
+	public void update() {
+		ProductDTO dto = new ProductDTO();
+		dto.setName("name");
+		dto.setDescription("description");
+		dto.setPrice(1.0);
+		dto.setCategory("category");
+
+		int id = ProductTestResource.insert(dto).then().assertThat().statusCode(Status.CREATED.getStatusCode())
+				.extract().jsonPath().getInt("data.id");
+		dto.setId(id);
+
+		dto.setName("new name");
+		dto.setDescription("new description");
+
+		ProductTestResource.update(dto).then().assertThat().statusCode(Status.OK.getStatusCode()).and().root("data")
+				.body("id", notNullValue()).and().body("name", equalTo(dto.getName())).and()
+				.body("description", equalTo(dto.getDescription())).and().body("category", equalTo(dto.getCategory()));
+	}
+
+	@Test
+	public void removeNotFound() {
+		ProductTestResource.remove(99).then().assertThat().statusCode(Status.BAD_REQUEST.getStatusCode()).and()
+				.body("code", equalTo(ProductException.NOT_FOUND.getCode()));
+	}
+
+	@Test
+	public void remove() {
+		ProductDTO dto = new ProductDTO();
+		dto.setName("name");
+		dto.setDescription("description");
+		dto.setPrice(1.0);
+		dto.setCategory("category");
+
+		int id = ProductTestResource.insert(dto).then().assertThat().statusCode(Status.CREATED.getStatusCode())
+				.extract().jsonPath().getInt("data.id");
+		dto.setId(id);
+
+		ProductTestResource.findById(id).then().assertThat().statusCode(Status.OK.getStatusCode());
+
+		ProductTestResource.remove(id).then().assertThat().statusCode(Status.NO_CONTENT.getStatusCode());
+
+		ProductTestResource.findById(id).then().assertThat().statusCode(Status.NOT_FOUND.getStatusCode());
+	}
+
 }

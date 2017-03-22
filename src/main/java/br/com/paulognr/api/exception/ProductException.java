@@ -8,6 +8,8 @@ public class ProductException extends BaseException{
 	private static final long serialVersionUID = 1L;
 	
 	public static final ErrorCode ID_MUST_BE_NULL = new ErrorCode("XY_PRODUCT_0001", "Id must be null.");
+	public static final ErrorCode ID_MUST_NOT_BE_NULL = new ErrorCode("XY_PRODUCT_0002", "Id must not be null.");
+	public static final ErrorCode NOT_FOUND = new ErrorCode("XY_PRODUCT_0003", "Product not found.");
 	
     public ProductException(String code, String description, String details, Throwable cause) {
         super(code, description, details, cause);
